@@ -4,36 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
 using Random = UnityEngine.Random;
 
-public enum CellType
+public class EarthCell : MonoBehaviour
 {
-    Earth,
-    Empty,
-    Water
-}
-
-public class GridCell : MonoBehaviour
-{
-    private CellType _type;
-
-    public CellType Type
-    {
-        get => _type;
-        set => _type = value;
-    }
 
     private Material _material;
-    private Color _defaultColor;
     private bool _isSelected;
-
+    private Transform _grid;
     public bool IsSelected
     {
         get => _isSelected;
         set
         {
             SetTransparent(value);
-
             _isSelected = value;
         }
     }
@@ -51,6 +36,7 @@ public class GridCell : MonoBehaviour
     private void Start()
     {
         _material = GetComponent<SpriteRenderer>().material;
+        _grid = GetComponentInParent<Transform>();
     }
 
     private void Update()
@@ -65,5 +51,12 @@ public class GridCell : MonoBehaviour
     private void OnMouseExit()
     {
         IsSelected = false;
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log(Mathf.RoundToInt(transform.position.x / GameManager.CellSize) + " " + (Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize));
+        GameManager.Instance.RemoveObjectFromCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize), Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize);
+        Destroy(gameObject);
     }
 }
