@@ -43,7 +43,9 @@ public class GameManager : Singleton<GameManager>
     private int _ore;
 
     private bool _firstTurn;
-    
+
+    public bool FirstTurn => _firstTurn;
+
     public Camera mainCamera;
 
     private Grid _gridComponent;
@@ -127,10 +129,15 @@ public class GameManager : Singleton<GameManager>
     }
 
     //Remove object from the main matrix
-    public void RemoveObjectFromCell(int x, int y)
+    public void DigCell(int x, int y)
     {
         if (_firstTurn)
             _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
-        _gridComponent.RemoveObjectFromCell(x, y);
+        _gridComponent.RemoveObjectFromEnv(x, y);
+    }
+
+    public bool IsCellEmpty(int x, int y)
+    {
+        return _gridComponent.IsCellDigged(x, y);
     }
 }

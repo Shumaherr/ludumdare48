@@ -9,11 +9,10 @@ using Random = UnityEngine.Random;
 
 public class EarthCell : MonoBehaviour
 {
-
     private Material _material;
     private bool _isSelected;
     private Transform _grid;
-    
+
     public bool IsSelected
     {
         get => _isSelected;
@@ -46,9 +45,12 @@ public class EarthCell : MonoBehaviour
 
     private void OnMouseOver()
     {
-        IsSelected = true;
+        if(HaveEmptyNeighbour(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
+            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
+            GameManager.CellSize))
+            IsSelected = true;
     }
-    
+
     void OnMouseEnter()
     {
         Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
@@ -62,9 +64,38 @@ public class EarthCell : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log(Mathf.RoundToInt(transform.position.x / GameManager.CellSize) + " " + (Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize));
-        GameManager.Instance.RemoveObjectFromCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize), Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize);
+        if(!_isSelected && !GameManager.Instance.FirstTurn)
+            return;
+        Debug.Log(Mathf.RoundToInt(transform.position.x / GameManager.CellSize) + " " +
+                  (Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
+                   GameManager.CellSize));
+        GameManager.Instance.DigCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
+            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
+            GameManager.CellSize);
         Destroy(gameObject);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    private bool HaveEmptyNeighbour(int x, int y)
+    {
+        if (x == 0)
+        {
+            if (y == 0)
+            {
+                return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1);
+            }
+
+            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
+                   GameManager.Instance.IsCellEmpty(x, y - 1);
+        }
+
+        if (y == 0)
+        {
+            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
+                   GameManager.Instance.IsCellEmpty(x - 1, y);
+        }
+
+        return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
+               GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
     }
 }

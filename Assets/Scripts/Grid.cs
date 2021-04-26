@@ -9,7 +9,8 @@ public class Grid : MonoBehaviour
     [SerializeField] private Transform[] buildingsPrefabs;
     [SerializeField] private Transform earthPrefab;
     [SerializeField] private Transform waterPrefab;
-    private GridCell[,] _grid;
+    private GridCell[,] _gridEnv;
+    private GridCell[,] _gridBuildings;
     private Renderer _mainRenderer;
 
 
@@ -31,25 +32,39 @@ public class Grid : MonoBehaviour
 
     public void PlaceFlyingBuilding(int placeX, int placeY, Transform building)
     {
-        _grid[placeX, placeY].CurrentTransform = building;
+        _gridBuildings[placeX, placeY].CurrentTransform = building;
     }
 
     public bool IsPlaceTaken(int placeX, int placeY)
     {
-        return _grid[placeX, placeY].CurrentTransform != null;
+        return _gridBuildings[placeX, placeY].CurrentTransform != null ||
+               (_gridEnv[placeX, placeY].CurrentTransform != null && _gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground"));
+    }
+    
+    public bool IsCellDigged(int placeX, int placeY)
+    {
+        return _gridEnv[placeX, placeY].CurrentTransform == null || !_gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground");
     }
 
     public void GenerateCells(Vector2Int gridSize)
     {
-        _grid = new GridCell[gridSize.x, gridSize.y];
+        _gridEnv = new GridCell[gridSize.x, gridSize.y];
         for (int i = gridSize.x - 1; i >= 0; i--)
         {
             for (int j = gridSize.y - 1; j >= 0; j--)
             {
-                _grid[i, j] = new GridCell();
-                _grid[i, j].CurrentTransform = Instantiate(earthPrefab,
+                _gridEnv[i, j] = new GridCell();
+                _gridEnv[i, j].CurrentTransform = Instantiate(earthPrefab,
                     new Vector3(transform.position.x + i * 5, transform.position.y - j * 5), Quaternion.identity);
-                _grid[i, j].CurrentTransform.parent = this.transform;
+                _gridEnv[i, j].CurrentTransform.parent = this.transform;
+            }
+        }
+        _gridBuildings = new GridCell[gridSize.x, gridSize.y];
+        for (int i = gridSize.x - 1; i >= 0; i--)
+        {
+            for (int j = gridSize.y - 1; j >= 0; j--)
+            {
+                _gridBuildings[i, j] = new GridCell();
             }
         }
     }
@@ -57,11 +72,22 @@ public class Grid : MonoBehaviour
     public void RemoveObjectFromCell(int x, int y)
     {
         if (Random.value > 0.85)
-            _grid[x, y].CurrentTransform = Instantiate(waterPrefab,
+            _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
                 new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
         else
         {
-            _grid[x, y].CurrentTransform = null;
+            _gridEnv[x, y].CurrentTransform = null;
         }
+    }
+
+    public void RemoveObjectFromEnv(int x, int y)
+    {
+        if (Random.value > 0.85)
+                    _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
+                        new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
+                else
+                {
+                    _gridEnv[x, y].CurrentTransform = null;
+                }
     }
 }
