@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Utils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Utils.cs.meta" afterDir="false" />
+    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Basic buildings placing, Constraints, fixes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Earth.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Earth.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Grid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Grid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Highlight.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Highlight.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +24,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Utils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Grid.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5D1D5A0A-7C19-404A-97CE-EFD28864629E/6e/4e795e38/Input.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Building.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" root0="FORCE_HIGHLIGHTING" />
@@ -38,13 +35,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Utils.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/IPlaceable.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Grid.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" />
       </list>
     </option>
   </component>
@@ -86,8 +84,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1619265453083</updated>
-      <workItem from="1619265454379" duration="40774000" />
+      <workItem from="1619265454379" duration="48049000" />
     </task>
+    <task id="LOCAL-00001" summary="Basic buildings placing, Constraints, fixes">
+      <created>1619357215752</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1619357215752</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,6 +111,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Basic buildings placing, Constraints, fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basic buildings placing, Constraints, fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state width="1637" height="352" key="GridCell.Tab.0.bottom" timestamp="1619356923724">
@@ -187,10 +197,14 @@
     </state>
     <state width="1637" height="352" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619356923665" />
     <state width="1877" height="352" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@0.30.1920.1050" timestamp="1619314411571" />
-    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1619308897815">
+    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1619396986123">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
-    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619308897815" />
+    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619396986123" />
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2" timestamp="1619357217662">
+      <screen x="-1680" y="39" width="1680" height="1020" />
+    </state>
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619357217662" />
     <state x="-1177" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1619346333105">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
@@ -201,26 +215,26 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/GameManager.cs</url>
-          <line>58</line>
+          <line>96</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" initialLine="58">
             <startOffsets>
-              <option value="2052" />
+              <option value="2887" />
             </startOffsets>
             <endOffsets>
-              <option value="2284" />
+              <option value="3100" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="37" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Grid.cs</url>
-          <line>36</line>
+          <line>38</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Scripts/Grid.cs" initialLine="36">
             <startOffsets>
-              <option value="722" />
+              <option value="809" />
             </startOffsets>
             <endOffsets>
-              <option value="776" />
+              <option value="863" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="38" />

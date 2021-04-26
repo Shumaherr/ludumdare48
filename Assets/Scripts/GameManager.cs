@@ -11,9 +11,48 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] public Vector2Int gridSize;
     [SerializeField] public Transform _groundLevel;
     [SerializeField] private Building buildingToPlace;
+    [SerializeField] public Texture2D shovelCursorTexture;
+    
+    [SerializeField] public int startEnergy;
+    [SerializeField] public int startOre;
+    
+    private int _energy;
+
+    public int Energy
+    {
+        get => _energy;
+        set
+        {
+            _energy = value;
+            if (OnEnergyChange != null)
+                OnEnergyChange(_energy);
+        }
+    }
+
+    public int Ore
+    {
+        get => _ore;
+        set
+        {
+            _ore = value;
+            if (OnOreChange != null)
+                OnOreChange(_ore);
+        }
+    }
+
+    private int _ore;
+
+    private bool _firstTurn;
+    
     public Camera mainCamera;
 
     private Grid _gridComponent;
+    
+    //Delegates
+    public delegate void OnEnergyChangeDelegate(int value);
+    public event OnEnergyChangeDelegate OnEnergyChange;
+    public delegate void OnOreChangeDelegate(int value);
+    public event OnOreChangeDelegate OnOreChange;
 
     // Start is called before the first frame update
     void Start()
@@ -71,8 +110,12 @@ public class GameManager : Singleton<GameManager>
     void InitField()
     {
         _gridComponent.GenerateCells(gridSize);
+        _firstTurn = true;
+        Ore = startOre;
+        Energy = startEnergy;
     }
 
+    //Create flying building, that follow the mouse
     public void StartPlacingBuilding(Building buildingPrefab)
     {
         if (buildingToPlace != null)
@@ -83,8 +126,11 @@ public class GameManager : Singleton<GameManager>
         buildingToPlace = Instantiate(buildingPrefab);
     }
 
+    //Remove object from the main matrix
     public void RemoveObjectFromCell(int x, int y)
     {
+        if (_firstTurn)
+            _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
         _gridComponent.RemoveObjectFromCell(x, y);
     }
 }

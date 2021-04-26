@@ -13,6 +13,7 @@ public class EarthCell : MonoBehaviour
     private Material _material;
     private bool _isSelected;
     private Transform _grid;
+    
     public bool IsSelected
     {
         get => _isSelected;
@@ -47,10 +48,16 @@ public class EarthCell : MonoBehaviour
     {
         IsSelected = true;
     }
+    
+    void OnMouseEnter()
+    {
+        Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
+    }
 
     private void OnMouseExit()
     {
         IsSelected = false;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
     private void OnMouseDown()
@@ -58,5 +65,6 @@ public class EarthCell : MonoBehaviour
         Debug.Log(Mathf.RoundToInt(transform.position.x / GameManager.CellSize) + " " + (Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize));
         GameManager.Instance.RemoveObjectFromCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize), Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) / GameManager.CellSize);
         Destroy(gameObject);
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 }

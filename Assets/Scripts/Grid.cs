@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Grid : MonoBehaviour
 {
     [SerializeField] private Transform[] buildingsPrefabs;
     [SerializeField] private Transform earthPrefab;
+    [SerializeField] private Transform waterPrefab;
     private GridCell[,] _grid;
     private Renderer _mainRenderer;
 
@@ -54,6 +56,12 @@ public class Grid : MonoBehaviour
 
     public void RemoveObjectFromCell(int x, int y)
     {
-        _grid[x, y].CurrentTransform = null;
+        if (Random.value > 0.85)
+            _grid[x, y].CurrentTransform = Instantiate(waterPrefab,
+                new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
+        else
+        {
+            _grid[x, y].CurrentTransform = null;
+        }
     }
 }
