@@ -47,13 +47,14 @@ public class EarthCell : MonoBehaviour
     {
         if(HaveEmptyNeighbour(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
             Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
-            GameManager.CellSize))
+            GameManager.CellSize) && !GameManager.Instance.BuildingToPlace && GameManager.Instance.Energy - 10 >= 0)
             IsSelected = true;
     }
 
     void OnMouseEnter()
     {
-        Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
+        if(!GameManager.Instance.BuildingToPlace)
+            Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
     }
 
     private void OnMouseExit()
@@ -66,12 +67,10 @@ public class EarthCell : MonoBehaviour
     {
         if(!_isSelected && !GameManager.Instance.FirstTurn)
             return;
-        Debug.Log(Mathf.RoundToInt(transform.position.x / GameManager.CellSize) + " " +
-                  (Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
-                   GameManager.CellSize));
         GameManager.Instance.DigCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
             Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
             GameManager.CellSize);
+        CodeMonkey.Utils.UtilsClass.CreateWorldTextPopup("-10", transform.position, 1.0f);
         Destroy(gameObject);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
@@ -84,7 +83,11 @@ public class EarthCell : MonoBehaviour
             {
                 return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1);
             }
-
+            
+            if (y == GameManager.Instance.gridSize.y - 1)
+            {
+                return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
+            }
             return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
                    GameManager.Instance.IsCellEmpty(x, y - 1);
         }
@@ -92,6 +95,22 @@ public class EarthCell : MonoBehaviour
         if (y == 0)
         {
             return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
+                   GameManager.Instance.IsCellEmpty(x - 1, y);
+        }
+        if (x == GameManager.Instance.gridSize.x - 1)
+        {
+            if (y == GameManager.Instance.gridSize.y - 1)
+            {
+                return GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
+            }
+
+            return GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1) ||
+                   GameManager.Instance.IsCellEmpty(x, y - 1);
+        }
+
+        if (y == GameManager.Instance.gridSize.y - 1)
+        {
+            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1) ||
                    GameManager.Instance.IsCellEmpty(x - 1, y);
         }
 

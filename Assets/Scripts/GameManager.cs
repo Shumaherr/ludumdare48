@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Plane = UnityEngine.Plane;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -18,6 +23,8 @@ public class GameManager : Singleton<GameManager>
     
     private int _energy;
 
+    public Building BuildingToPlace => buildingToPlace;
+    
     public int Energy
     {
         get => _energy;
@@ -49,7 +56,8 @@ public class GameManager : Singleton<GameManager>
     public Camera mainCamera;
 
     private Grid _gridComponent;
-    
+    private bool _moveCamera;
+
     //Delegates
     public delegate void OnEnergyChangeDelegate(int value);
     public event OnEnergyChangeDelegate OnEnergyChange;
@@ -62,6 +70,7 @@ public class GameManager : Singleton<GameManager>
         mainCamera = Camera.main;
         _gridComponent = grid.GetComponent<Grid>();
         InitField();
+        
     }
 
     // Update is called once per frame
@@ -102,6 +111,7 @@ public class GameManager : Singleton<GameManager>
                     {
                         _gridComponent.PlaceFlyingBuilding(x / CellSize, Math.Abs(y) / CellSize,
                             buildingToPlace.transform);
+                        buildingToPlace.IsActive = true;
                         buildingToPlace = null;
                     }
                 }
@@ -132,12 +142,43 @@ public class GameManager : Singleton<GameManager>
     public void DigCell(int x, int y)
     {
         if (_firstTurn)
+        {
             _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
+            InvokeRepeating("MoveGround", 10.0f, 10.0f);
+        }
         _gridComponent.RemoveObjectFromEnv(x, y);
+        Energy -= 10;
     }
 
     public bool IsCellEmpty(int x, int y)
     {
         return _gridComponent.IsCellDigged(x, y);
+    }
+
+    void MoveGround() {
+        _gridComponent.RemoveFirstLine();
+        _groundLevel.position = new Vector2(_groundLevel.position.x, _groundLevel.position.y - CellSize); //TODO Animate
+        Vector3 newPos = mainCamera.transform.position;
+        newPos.y -= CellSize;
+        StartCoroutine("MoveCamera", newPos);
+        
+        if (_gridComponent.NoTurn())
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+    }
+
+    private IEnumerator MoveCamera(Vector3 newPos)
+    {
+        while(mainCamera.transform.position.y > newPos.y) {
+            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, newPos, 0.5f);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+       
     }
 }

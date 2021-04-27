@@ -85,9 +85,40 @@ public class Grid : MonoBehaviour
         if (Random.value > 0.85)
                     _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
                         new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
-                else
+        else
+        {
+            _gridEnv[x, y].CurrentTransform = null;
+        }
+    }
+
+    public void RemoveFirstLine()
+    {
+        for(int i = 0; i < GameManager.Instance.gridSize.x; i++)
+        {
+            if(_gridBuildings[i, 0].CurrentTransform != null)
+                _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            if(_gridEnv[i, 0].CurrentTransform != null)
+                _gridEnv[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+        }
+        _gridBuildings = Utils.TrimArray(0, _gridBuildings);
+        _gridEnv = Utils.TrimArray(0, _gridEnv);
+        GameManager.Instance.gridSize.y -= 1;
+    }
+
+    public bool NoTurn()
+    {
+        bool result = true;
+        for (int i = 0; i < GameManager.Instance.gridSize.x; i++)
+        {
+            for (int j = 0; j < GameManager.Instance.gridSize.y; j++)
+            {
+                if (_gridEnv[i, j].CurrentTransform == null || !_gridEnv[i, j].CurrentTransform.CompareTag("Ground"))
                 {
-                    _gridEnv[x, y].CurrentTransform = null;
+                    result = false;
                 }
+        }
+        }
+
+        return result;
     }
 }
