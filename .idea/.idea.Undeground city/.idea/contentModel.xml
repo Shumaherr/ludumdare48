@@ -8,24 +8,14 @@
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
           <e p="Building.cs" t="Include" />
-          <e p="Button_Sprite.cs" t="Include" />
-          <e p="Button_UI.cs" t="Include" />
           <e p="EarthCell.cs" t="Include" />
-          <e p="FunctionPeriodic.cs" t="Include" />
-          <e p="FunctionTimer.cs" t="Include" />
           <e p="FunctionUpdater.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="Grid.cs" t="Include" />
           <e p="GridCell.cs" t="Include" />
           <e p="MainMenu.cs" t="Include" />
-          <e p="Singletone.cs" t="Include" />
-          <e p="UI_Bar.cs" t="Include" />
-          <e p="UI_BarMultiple.cs" t="Include" />
-          <e p="UI_TextComplex.cs" t="Include" />
           <e p="UIManager.cs" t="Include" />
           <e p="Utils.cs" t="Include" />
-          <e p="UtilsClass.cs" t="Include" />
-          <e p="World_Mesh.cs" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Examples &amp; Extras" t="Include">

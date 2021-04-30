@@ -9,6 +9,7 @@ public class Grid : MonoBehaviour
     [SerializeField] private Transform[] buildingsPrefabs;
     [SerializeField] private Transform earthPrefab;
     [SerializeField] private Transform waterPrefab;
+    [SerializeField] private Transform backgroundPrefab;
     private GridCell[,] _gridEnv;
     private GridCell[,] _gridBuildings;
     private Renderer _mainRenderer;
@@ -37,13 +38,12 @@ public class Grid : MonoBehaviour
 
     public bool IsPlaceTaken(int placeX, int placeY)
     {
-        return _gridBuildings[placeX, placeY].CurrentTransform != null ||
-               (_gridEnv[placeX, placeY].CurrentTransform != null && _gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground"));
+        return _gridBuildings[placeX, placeY].CurrentTransform != null;
     }
     
     public bool IsCellDigged(int placeX, int placeY)
     {
-        return _gridEnv[placeX, placeY].CurrentTransform == null || !_gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground");
+        return !_gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground");
     }
 
     public void GenerateCells(Vector2Int gridSize)
@@ -53,7 +53,7 @@ public class Grid : MonoBehaviour
         {
             for (int j = gridSize.y - 1; j >= 0; j--)
             {
-                _gridEnv[i, j] = new GridCell();
+                _gridEnv[i, j] = gameObject.AddComponent<GridCell>();
                 _gridEnv[i, j].CurrentTransform = Instantiate(earthPrefab,
                     new Vector3(transform.position.x + i * 5, transform.position.y - j * 5), Quaternion.identity);
                 _gridEnv[i, j].CurrentTransform.parent = this.transform;
@@ -64,30 +64,23 @@ public class Grid : MonoBehaviour
         {
             for (int j = gridSize.y - 1; j >= 0; j--)
             {
-                _gridBuildings[i, j] = new GridCell();
+                _gridBuildings[i, j] = gameObject.AddComponent<GridCell>();
             }
-        }
-    }
-
-    public void RemoveObjectFromCell(int x, int y)
-    {
-        if (Random.value > 0.85)
-            _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
-                new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
-        else
-        {
-            _gridEnv[x, y].CurrentTransform = null;
         }
     }
 
     public void RemoveObjectFromEnv(int x, int y)
     {
+        Vector2 newPos = transform.position;
+        newPos.x += x * GameManager.CellSize;
+        newPos.y -= y * GameManager.CellSize - GameManager.Instance._groundLevel.position.y;
         if (Random.value > 0.85)
-                    _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
-                        new Vector3(transform.position.x + x * 5, transform.position.y - y * 5), Quaternion.identity);
+            _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
+                newPos, Quaternion.identity);
         else
         {
-            _gridEnv[x, y].CurrentTransform = null;
+            _gridEnv[x, y].CurrentTransform = Instantiate(backgroundPrefab,
+                newPos, Quaternion.identity);
         }
     }
 
@@ -96,7 +89,10 @@ public class Grid : MonoBehaviour
         for(int i = 0; i < GameManager.Instance.gridSize.x; i++)
         {
             if(_gridBuildings[i, 0].CurrentTransform != null)
+            {
                 _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+                _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<Building>().IsActive = false;
+            }
             if(_gridEnv[i, 0].CurrentTransform != null)
                 _gridEnv[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
         }
@@ -112,7 +108,7 @@ public class Grid : MonoBehaviour
         {
             for (int j = 0; j < GameManager.Instance.gridSize.y; j++)
             {
-                if (_gridEnv[i, j].CurrentTransform == null || !_gridEnv[i, j].CurrentTransform.CompareTag("Ground"))
+                if (!_gridEnv[i, j].CurrentTransform.CompareTag("Ground"))
                 {
                     result = false;
                 }

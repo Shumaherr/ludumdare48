@@ -12,6 +12,7 @@ public class EarthCell : MonoBehaviour
     private Material _material;
     private bool _isSelected;
     private Transform _grid;
+    private static readonly int Selected = Shader.PropertyToID("_IsSelected");
 
     public bool IsSelected
     {
@@ -26,10 +27,10 @@ public class EarthCell : MonoBehaviour
     private void SetTransparent(bool value)
     {
         if (value)
-            _material.SetInt("_IsSelected", 1);
+            _material.SetInt(Selected, 1);
         else
         {
-            _material.SetInt("_IsSelected", 0);
+            _material.SetInt(Selected, 0);
         }
     }
 
@@ -68,9 +69,9 @@ public class EarthCell : MonoBehaviour
         if(!_isSelected && !GameManager.Instance.FirstTurn)
             return;
         GameManager.Instance.DigCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
-            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
-            GameManager.CellSize);
-        CodeMonkey.Utils.UtilsClass.CreateWorldTextPopup("-10", transform.position, 1.0f);
+            (Mathf.RoundToInt(Math.Abs(transform.position.y)) /
+            GameManager.CellSize));
+        Utils.CreateWorldTextPopup("-10", transform.position, 1.0f);
         Destroy(gameObject);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }

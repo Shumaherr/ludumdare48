@@ -9,8 +9,12 @@ using Plane = UnityEngine.Plane;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-public class GameManager : Singleton<GameManager>
+public class GameManager :MonoBehaviour
 {
+    private static GameManager _instance;
+
+    public static GameManager Instance { get { return _instance; } }
+    
     public const int CellSize = 5;
     [SerializeField] private GameObject grid;
     [SerializeField] public Vector2Int gridSize;
@@ -64,6 +68,17 @@ public class GameManager : Singleton<GameManager>
     public delegate void OnOreChangeDelegate(int value);
     public event OnOreChangeDelegate OnOreChange;
 
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        } else {
+            _instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -107,7 +122,10 @@ public class GameManager : Singleton<GameManager>
                 {
                     if (!_gridComponent.IsPlaceTaken(x / CellSize,
                         Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
-                                         Math.Abs(y)) / GameManager.CellSize))
+                                         Math.Abs(y)) / GameManager.CellSize) &&
+                        _gridComponent.IsCellDigged(x / CellSize,
+                            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
+                                             Math.Abs(y)) / GameManager.CellSize))
                     {
                         _gridComponent.PlaceFlyingBuilding(x / CellSize, Math.Abs(y) / CellSize,
                             buildingToPlace.transform);
@@ -146,7 +164,7 @@ public class GameManager : Singleton<GameManager>
             _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
             InvokeRepeating("MoveGround", 10.0f, 10.0f);
         }
-        _gridComponent.RemoveObjectFromEnv(x, y);
+        _gridComponent.RemoveObjectFromEnv(x, y + (int)_groundLevel.position.y / CellSize);
         Energy -= 10;
     }
 
