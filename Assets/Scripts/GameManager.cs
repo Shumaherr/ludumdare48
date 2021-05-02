@@ -99,7 +99,7 @@ public class GameManager :MonoBehaviour
         if (buildingToPlace != null)
         {
             var groundPlane = new Plane(Vector3.forward, Vector3.zero);
-            Ray ray = GameManager.Instance.mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (groundPlane.Raycast(ray, out float position))
             {
@@ -120,14 +120,12 @@ public class GameManager :MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (!_gridComponent.IsPlaceTaken(x / CellSize,
-                        Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
-                                         Math.Abs(y)) / GameManager.CellSize) &&
-                        _gridComponent.IsCellDigged(x / CellSize,
-                            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
-                                             Math.Abs(y)) / GameManager.CellSize))
+                    int xPos = x / CellSize;
+                    int yPos = Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
+                                                Math.Abs(y)) / GameManager.CellSize;
+                    if (CanBuildingPlaced(xPos,yPos))
                     {
-                        _gridComponent.PlaceFlyingBuilding(x / CellSize, Math.Abs(y) / CellSize,
+                        _gridComponent.PlaceFlyingBuilding(xPos, yPos,
                             buildingToPlace.transform);
                         buildingToPlace.IsActive = true;
                         buildingToPlace = null;
@@ -137,6 +135,28 @@ public class GameManager :MonoBehaviour
         }
     }
 
+    bool CanBuildingPlaced(int x, int y)
+    {
+        if (_gridComponent.IsPlaceTaken(x, y) || !_gridComponent.IsCellDigged(x, y))
+            return false;
+        switch (buildingToPlace.Type)
+        {
+            case Type.House:
+                break;
+            case Type.PowerPlant:
+                if (!_gridComponent.IsWater(x, y))
+                    return false;
+                break;
+            case Type.Mine:
+                if (!_gridComponent.IsOre(x, y))
+                    return false;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return true;
+    }
     void InitField()
     {
         _gridComponent.GenerateCells(gridSize);

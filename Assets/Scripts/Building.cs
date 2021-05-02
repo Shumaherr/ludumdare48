@@ -14,7 +14,7 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private Type type;
     private bool _isActive;
-
+    private IEnumerator _coroutine;
     public bool IsActive
     {
         get => _isActive;
@@ -23,7 +23,12 @@ public class Building : MonoBehaviour
             _isActive = value;
             if (value)
             {
-                StartCoroutine("GiveResource");
+                _coroutine = GiveResource();
+                StartCoroutine(_coroutine);
+            }
+            else
+            {
+                StopCoroutine(_coroutine);
             }
         }
     }

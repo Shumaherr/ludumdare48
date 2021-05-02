@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Building
   - Ground
+  - Background
+  - Water
   layers:
   - Default
   - TransparentFX

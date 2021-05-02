@@ -117,4 +117,14 @@ public class Grid : MonoBehaviour
 
         return result;
     }
+
+    public bool IsWater(int x, int y)
+    {
+        return _gridEnv[x, y].CurrentTransform.CompareTag("Water");
+    }
+    
+    public bool IsOre(int x, int y)
+    {
+        return _gridEnv[x, y].CurrentTransform.CompareTag("Ore");
+    }
 }

@@ -13,9 +13,4 @@ public class GridCell : MonoBehaviour
         get => _currentTransform;
         set => _currentTransform = value;
     }
-
-    private void OnSceneGUI()
-    {
-        Handles.Label(_currentTransform.transform.position,_currentTransform.transform.position.ToString());
-    }
 }
