@@ -24,11 +24,24 @@ public class GameManager :MonoBehaviour
     
     [SerializeField] public int startEnergy;
     [SerializeField] public int startStone;
+    [SerializeField] public int startPeople;
     
     private int _energy;
+    private int _people;
 
     public Building BuildingToPlace => buildingToPlace;
     
+    public int People
+    {
+        get => _people;
+        set
+        {
+            _people = value;
+            if (OnPeopleChange != null)
+                OnPeopleChange(_people);
+        }
+    }
+
     public int Energy
     {
         get => _energy;
@@ -65,6 +78,8 @@ public class GameManager :MonoBehaviour
     //Delegates
     public delegate void OnEnergyChangeDelegate(int value);
     public event OnEnergyChangeDelegate OnEnergyChange;
+    public delegate void OnPeopleChangeDelegate(int value);
+    public event OnPeopleChangeDelegate OnPeopleChange;
     public delegate void OnOreChangeDelegate(int value);
     public event OnOreChangeDelegate OnStoneChange;
 
@@ -120,18 +135,23 @@ public class GameManager :MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    int xPos = x / CellSize;
-                    int yPos = Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
-                                                Math.Abs(y)) / GameManager.CellSize;
-                    if (CanBuildingPlaced(xPos,yPos))
-                    {
-                        _gridComponent.PlaceFlyingBuilding(xPos, yPos,
-                            buildingToPlace.transform);
-                        buildingToPlace.IsActive = true;
-                        buildingToPlace = null;
-                    }
+                    PlaceBuilding(x, y);
                 }
             }
+        }
+    }
+
+    private void PlaceBuilding(int x, int y)
+    {
+        int xPos = x / CellSize;
+        int yPos = Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y +
+                                    Math.Abs(y)) / GameManager.CellSize;
+        if (CanBuildingPlaced(xPos, yPos))
+        {
+            _gridComponent.PlaceFlyingBuilding(xPos, yPos,
+                buildingToPlace.transform);
+            buildingToPlace.IsActive = true;
+            buildingToPlace = null;
         }
     }
 
@@ -157,17 +177,36 @@ public class GameManager :MonoBehaviour
 
         return true;
     }
+
+    private bool CheckResources(Building building)
+    {
+        if (Stone < building.CostsStone)
+        {
+            //TODO tooltip
+            return false;
+        }
+        else if (People < building.CostsPeople)
+        {
+            //TODO tooltip
+            return false;
+        }
+
+        return true;
+    }
     void InitField()
     {
         _gridComponent.GenerateCells(gridSize);
         _firstTurn = true;
         Stone = startStone;
         Energy = startEnergy;
+        People = startPeople;
     }
 
     //Create flying building, that follow the mouse
     public void StartPlacingBuilding(Building buildingPrefab)
     {
+        if (!CheckResources(buildingPrefab))
+            return;
         if (buildingToPlace != null)
         {
             Destroy(buildingToPlace.gameObject);

@@ -13,6 +13,14 @@ public enum Type
 public class Building : MonoBehaviour
 {
     [SerializeField] private Type type;
+    [SerializeField] private int costsStone;
+
+    public int CostsStone => costsStone;
+
+    public int CostsPeople => costsPeople;
+
+    [SerializeField] private int costsPeople;
+    
     private bool _isActive;
     private IEnumerator _coroutine;
     public bool IsActive
@@ -28,7 +36,7 @@ public class Building : MonoBehaviour
             }
             else
             {
-                StopCoroutine(_coroutine);
+                 StopCoroutine(_coroutine);
             }
         }
     }
@@ -74,4 +82,5 @@ public class Building : MonoBehaviour
     {
         StopCoroutine("GiveResource");
     }
+    
 }

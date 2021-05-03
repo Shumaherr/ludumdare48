@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Stable version">
+    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Stones, fixes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Building.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Building.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Grid.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Grid.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,9 +47,9 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UtilsClass.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Utils.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Grid.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Grid.cs" />
       </list>
     </option>
   </component>
@@ -98,7 +95,7 @@
       <workItem from="1619265454379" duration="81010000" />
       <workItem from="1619653105668" duration="9500000" />
       <workItem from="1619771201548" duration="11205000" />
-      <workItem from="1620052892813" duration="1818000" />
+      <workItem from="1620052892813" duration="5323000" />
     </task>
     <task id="LOCAL-00001" summary="Basic buildings placing, Constraints, fixes">
       <created>1619357215752</created>
@@ -135,7 +132,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619785965182</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Stones, fixes">
+      <created>1620055396231</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1620055396231</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,7 +165,8 @@
     <MESSAGE value="UI, Fixes" />
     <MESSAGE value="Jam version" />
     <MESSAGE value="Stable version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Stable version" />
+    <MESSAGE value="Stones, fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Stones, fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state width="818" height="348" key="GridCell.Tab.0.bottom" timestamp="1619912121761">
@@ -244,18 +249,18 @@
     </state>
     <state width="818" height="348" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619912121677" />
     <state width="1877" height="352" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@0.30.1920.1050" timestamp="1619314411571" />
-    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1619480326269">
+    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1620083273588">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
-    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619480326269" />
+    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620083273588" />
     <state x="-1339" y="191" key="SettingsEditor" timestamp="1619784982100">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
     <state x="-1339" y="191" key="SettingsEditor/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619784982100" />
-    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2" timestamp="1619914570182">
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2" timestamp="1620055399137">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
-    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619914570182" />
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620055399137" />
     <state width="848" height="518" key="XDebugger.FullValuePopup" timestamp="1619914082099">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
@@ -264,24 +269,5 @@
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
     <state x="-1177" y="259" width="672" height="678" key="search.everywhere.popup/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619785662432" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Building.cs</url>
-          <line>30</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/Building.cs" initialLine="29">
-            <startOffsets>
-              <option value="597" />
-            </startOffsets>
-            <endOffsets>
-              <option value="623" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="55" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
