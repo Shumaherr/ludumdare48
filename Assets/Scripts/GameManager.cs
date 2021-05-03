@@ -23,7 +23,7 @@ public class GameManager :MonoBehaviour
     [SerializeField] public Texture2D shovelCursorTexture;
     
     [SerializeField] public int startEnergy;
-    [SerializeField] public int startOre;
+    [SerializeField] public int startStone;
     
     private int _energy;
 
@@ -40,18 +40,18 @@ public class GameManager :MonoBehaviour
         }
     }
 
-    public int Ore
+    public int Stone
     {
-        get => _ore;
+        get => _stone;
         set
         {
-            _ore = value;
-            if (OnOreChange != null)
-                OnOreChange(_ore);
+            _stone = value;
+            if (OnStoneChange != null)
+                OnStoneChange(_stone);
         }
     }
 
-    private int _ore;
+    private int _stone;
 
     private bool _firstTurn;
 
@@ -66,7 +66,7 @@ public class GameManager :MonoBehaviour
     public delegate void OnEnergyChangeDelegate(int value);
     public event OnEnergyChangeDelegate OnEnergyChange;
     public delegate void OnOreChangeDelegate(int value);
-    public event OnOreChangeDelegate OnOreChange;
+    public event OnOreChangeDelegate OnStoneChange;
 
 
     private void Awake()
@@ -148,7 +148,7 @@ public class GameManager :MonoBehaviour
                     return false;
                 break;
             case Type.Mine:
-                if (!_gridComponent.IsOre(x, y))
+                if (!_gridComponent.IsStone(x, y))
                     return false;
                 break;
             default:
@@ -161,7 +161,7 @@ public class GameManager :MonoBehaviour
     {
         _gridComponent.GenerateCells(gridSize);
         _firstTurn = true;
-        Ore = startOre;
+        Stone = startStone;
         Energy = startEnergy;
     }
 

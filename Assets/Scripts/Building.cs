@@ -60,7 +60,7 @@ public class Building : MonoBehaviour
                     Utils.CreateWorldTextPopup("+10", transform.position, 1.0f);
                     break;
                 case Type.Mine:
-                    GameManager.Instance.Ore += 10;
+                    GameManager.Instance.Stone += 10;
                    Utils.CreateWorldTextPopup("+10", transform.position, 1.0f);
                     break;
                 default:

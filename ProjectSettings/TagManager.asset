@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Background
   - Water
+  - Stones
   layers:
   - Default
   - TransparentFX

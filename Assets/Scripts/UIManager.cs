@@ -11,8 +11,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         energyText.text = GameManager.Instance.Energy.ToString();
-        oreText.text = GameManager.Instance.Ore.ToString();
-        GameManager.Instance.OnOreChange += ChangeOre;
+        oreText.text = GameManager.Instance.Stone.ToString();
+        GameManager.Instance.OnStoneChange += ChangeStone;
         GameManager.Instance.OnEnergyChange += ChangeEnergy;
     }
 
@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
         energyText.text = value.ToString();
     }
 
-    private void ChangeOre(int value)
+    private void ChangeStone(int value)
     {
         oreText.text = value.ToString();
     }
