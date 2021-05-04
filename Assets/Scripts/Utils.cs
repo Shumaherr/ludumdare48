@@ -40,6 +40,7 @@ public static class Utils
     // Create a Text Popup in the World
     public static void CreateWorldTextPopup(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, Vector3 finalPopupPosition, float popupTime) {
         TextMesh textMesh = CreateWorldText(parent, text, localPosition, fontSize, color, TextAnchor.LowerLeft, TextAlignment.Left, sortingOrderDefault);
+        textMesh.GetComponent<MeshRenderer>().sortingLayerName = "Popups";
         Transform transform = textMesh.transform;
         Vector3 moveAmount = (finalPopupPosition - localPosition) / popupTime;
         CodeMonkey.Utils.FunctionUpdater.Create(delegate () {

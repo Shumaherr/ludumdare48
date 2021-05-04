@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Stones, fixes">
+    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Check resources before building, people as resource">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Building.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Building.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,11 +44,11 @@
         <option value="$PROJECT_DIR$/Assets/Gizmos/TextGizmo.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UtilsClass.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Utils.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Grid.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Utils.cs" />
       </list>
     </option>
   </component>
@@ -95,7 +94,7 @@
       <workItem from="1619265454379" duration="81010000" />
       <workItem from="1619653105668" duration="9500000" />
       <workItem from="1619771201548" duration="11205000" />
-      <workItem from="1620052892813" duration="5323000" />
+      <workItem from="1620052892813" duration="6259000" />
     </task>
     <task id="LOCAL-00001" summary="Basic buildings placing, Constraints, fixes">
       <created>1619357215752</created>
@@ -139,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620055396231</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Check resources before building, people as resource">
+      <created>1620084439257</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1620084439257</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,7 +172,8 @@
     <MESSAGE value="Jam version" />
     <MESSAGE value="Stable version" />
     <MESSAGE value="Stones, fixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Stones, fixes" />
+    <MESSAGE value="Check resources before building, people as resource" />
+    <option name="LAST_COMMIT_MESSAGE" value="Check resources before building, people as resource" />
   </component>
   <component name="WindowStateProjectService">
     <state width="818" height="348" key="GridCell.Tab.0.bottom" timestamp="1619912121761">
@@ -257,10 +264,10 @@
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
     <state x="-1339" y="191" key="SettingsEditor/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619784982100" />
-    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2" timestamp="1620055399137">
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2" timestamp="1620084441396">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
-    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620055399137" />
+    <state x="-1248" y="281" key="Vcs.Push.Dialog.v2/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620084441396" />
     <state width="848" height="518" key="XDebugger.FullValuePopup" timestamp="1619914082099">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
