@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Check resources before building, people as resource">
+    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Fix popups sorting layer">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Building.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Building.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +40,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/Scripts/IPlaceable.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MainMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Singletone.cs" />
         <option value="$PROJECT_DIR$/Assets/Gizmos/TextGizmo.cs" />
@@ -46,9 +47,10 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UtilsClass.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/EarthCell.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Grid.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Utils.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Building.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" />
       </list>
     </option>
   </component>
@@ -94,7 +96,7 @@
       <workItem from="1619265454379" duration="81010000" />
       <workItem from="1619653105668" duration="9500000" />
       <workItem from="1619771201548" duration="11205000" />
-      <workItem from="1620052892813" duration="6259000" />
+      <workItem from="1620052892813" duration="7772000" />
     </task>
     <task id="LOCAL-00001" summary="Basic buildings placing, Constraints, fixes">
       <created>1619357215752</created>
@@ -145,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620084439257</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fix popups sorting layer">
+      <created>1620142397562</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1620142397562</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,7 +182,8 @@
     <MESSAGE value="Stable version" />
     <MESSAGE value="Stones, fixes" />
     <MESSAGE value="Check resources before building, people as resource" />
-    <option name="LAST_COMMIT_MESSAGE" value="Check resources before building, people as resource" />
+    <MESSAGE value="Fix popups sorting layer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix popups sorting layer" />
   </component>
   <component name="WindowStateProjectService">
     <state width="818" height="348" key="GridCell.Tab.0.bottom" timestamp="1619912121761">
@@ -256,10 +266,10 @@
     </state>
     <state width="818" height="348" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1619912121677" />
     <state width="1877" height="352" key="GridCell.Tab.3.right/0.30.1920.1050/-1680.39.1680.1020@0.30.1920.1050" timestamp="1619314411571" />
-    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1620083273588">
+    <state x="-1036" y="223" key="RiderGenerateDialog" timestamp="1620259176242">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>
-    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620083273588" />
+    <state x="-1036" y="223" key="RiderGenerateDialog/0.30.1920.1050/-1680.39.1680.1020@-1680.39.1680.1020" timestamp="1620259176242" />
     <state x="-1339" y="191" key="SettingsEditor" timestamp="1619784982100">
       <screen x="-1680" y="39" width="1680" height="1020" />
     </state>

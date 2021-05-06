@@ -24,7 +24,7 @@ public class GameManager :MonoBehaviour
     
     [SerializeField] public int startEnergy;
     [SerializeField] public int startStone;
-    [SerializeField] public int startPeople;
+    [SerializeField] public int startPeople = 0;
     
     private int _energy;
     private int _people;
@@ -150,6 +150,11 @@ public class GameManager :MonoBehaviour
         {
             _gridComponent.PlaceFlyingBuilding(xPos, yPos,
                 buildingToPlace.transform);
+            Stone -= buildingToPlace.CostsStone;
+            if (buildingToPlace.Type == Type.House)
+            {
+                People += 10;
+            }
             buildingToPlace.IsActive = true;
             buildingToPlace = null;
         }

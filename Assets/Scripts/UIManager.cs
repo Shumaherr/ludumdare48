@@ -6,14 +6,21 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI energyText;
-    [SerializeField] private TextMeshProUGUI oreText;
+    [SerializeField] private TextMeshProUGUI stoneText;
+    [SerializeField] private TextMeshProUGUI peopleText;
     // Start is called before the first frame update
     void Start()
     {
         energyText.text = GameManager.Instance.Energy.ToString();
-        oreText.text = GameManager.Instance.Stone.ToString();
+       stoneText.text = GameManager.Instance.Stone.ToString();
         GameManager.Instance.OnStoneChange += ChangeStone;
         GameManager.Instance.OnEnergyChange += ChangeEnergy;
+        GameManager.Instance.OnPeopleChange += ChangePeople;
+    }
+
+    private void ChangePeople(int value)
+    {
+        peopleText.text = value.ToString();
     }
 
     private void ChangeEnergy(int value)
@@ -23,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     private void ChangeStone(int value)
     {
-        oreText.text = value.ToString();
+        stoneText.text = value.ToString();
     }
 
     // Update is called once per frame

@@ -8,8 +8,8 @@ public enum Type
     House,
     PowerPlant,
     Mine
-    
 }
+
 public class Building : MonoBehaviour
 {
     [SerializeField] private Type type;
@@ -20,9 +20,10 @@ public class Building : MonoBehaviour
     public int CostsPeople => costsPeople;
 
     [SerializeField] private int costsPeople;
-    
+
     private bool _isActive;
     private IEnumerator _coroutine;
+
     public bool IsActive
     {
         get => _isActive;
@@ -36,7 +37,9 @@ public class Building : MonoBehaviour
             }
             else
             {
-                 StopCoroutine(_coroutine);
+                if (type == Type.House)
+                    GameManager.Instance.People -= 10;
+                StopCoroutine(_coroutine);
             }
         }
     }
@@ -52,7 +55,6 @@ public class Building : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     IEnumerator GiveResource()
@@ -69,11 +71,12 @@ public class Building : MonoBehaviour
                     break;
                 case Type.Mine:
                     GameManager.Instance.Stone += 10;
-                   Utils.CreateWorldTextPopup("+10", transform.position, 1.0f);
+                    Utils.CreateWorldTextPopup("+10", transform.position, 1.0f);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             yield return new WaitForSeconds(5.0f);
         }
     }
@@ -82,5 +85,4 @@ public class Building : MonoBehaviour
     {
         StopCoroutine("GiveResource");
     }
-    
 }
