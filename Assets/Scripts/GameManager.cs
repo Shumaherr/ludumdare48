@@ -28,7 +28,19 @@ public class GameManager :MonoBehaviour
     
     private int _energy;
     private int _people;
+    private int _stone;
+    private int _freePeople;
 
+    private Queue<Building> _waitList; //Building that cant be activated because of there are no enough people
+    private bool _firstTurn;
+
+    public bool FirstTurn => _firstTurn;
+
+    public Camera mainCamera;
+
+    private Grid _gridComponent;
+    private bool _moveCamera;
+    
     public Building BuildingToPlace => buildingToPlace;
     
     public int People
@@ -64,17 +76,6 @@ public class GameManager :MonoBehaviour
         }
     }
 
-    private int _stone;
-
-    private bool _firstTurn;
-
-    public bool FirstTurn => _firstTurn;
-
-    public Camera mainCamera;
-
-    private Grid _gridComponent;
-    private bool _moveCamera;
-
     //Delegates
     public delegate void OnEnergyChangeDelegate(int value);
     public event OnEnergyChangeDelegate OnEnergyChange;
@@ -100,7 +101,7 @@ public class GameManager :MonoBehaviour
         mainCamera = Camera.main;
         _gridComponent = grid.GetComponent<Grid>();
         InitField();
-        
+        _waitList = new Queue<Building>();
     }
 
     // Update is called once per frame
@@ -154,8 +155,22 @@ public class GameManager :MonoBehaviour
             if (buildingToPlace.Type == Type.House)
             {
                 People += 10;
+                _freePeople += 10;
             }
-            buildingToPlace.IsActive = true;
+            else
+            {
+                _freePeople -= buildingToPlace.CostsPeople;
+            }
+
+            if (_freePeople >= 0)
+            {
+                buildingToPlace.IsActive = true;
+            }
+            else
+            {
+                _waitList.Enqueue(buildingToPlace);
+            }
+            
             buildingToPlace = null;
         }
     }
@@ -186,11 +201,6 @@ public class GameManager :MonoBehaviour
     private bool CheckResources(Building building)
     {
         if (Stone < building.CostsStone)
-        {
-            //TODO tooltip
-            return false;
-        }
-        else if (People < building.CostsPeople)
         {
             //TODO tooltip
             return false;

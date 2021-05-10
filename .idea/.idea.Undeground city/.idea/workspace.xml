@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="Fix popups sorting layer">
+    <list default="true" id="580a6932-d83f-4474-9495-2601832efd74" name="Default Changelist" comment="people for house, fixes">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Undeground city/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Building.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Building.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UIManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +94,7 @@
       <workItem from="1619265454379" duration="81010000" />
       <workItem from="1619653105668" duration="9500000" />
       <workItem from="1619771201548" duration="11205000" />
-      <workItem from="1620052892813" duration="7772000" />
+      <workItem from="1620052892813" duration="10018000" />
     </task>
     <task id="LOCAL-00001" summary="Basic buildings placing, Constraints, fixes">
       <created>1619357215752</created>
@@ -154,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620142397562</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="people for house, fixes">
+      <created>1620259528209</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1620259528209</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +188,8 @@
     <MESSAGE value="Stones, fixes" />
     <MESSAGE value="Check resources before building, people as resource" />
     <MESSAGE value="Fix popups sorting layer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix popups sorting layer" />
+    <MESSAGE value="people for house, fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="people for house, fixes" />
   </component>
   <component name="WindowStateProjectService">
     <state width="818" height="348" key="GridCell.Tab.0.bottom" timestamp="1619912121761">
