@@ -136,4 +136,5 @@ public class Grid : MonoBehaviour
     {
         return _gridEnv[x, y].CurrentTransform.CompareTag("Stones");
     }
+
 }

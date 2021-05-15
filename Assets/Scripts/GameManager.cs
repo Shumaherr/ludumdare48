@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Plane = UnityEngine.Plane;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -31,7 +32,8 @@ public class GameManager :MonoBehaviour
     private int _stone;
     private int _freePeople;
 
-    private Queue<Building> _waitList; //Building that cant be activated because of there are no enough people
+    private List<Building> _buildings;
+    private List<Building> _waitList; //Building that cant be activated because of there are no enough people
     private bool _firstTurn;
 
     public bool FirstTurn => _firstTurn;
@@ -48,9 +50,16 @@ public class GameManager :MonoBehaviour
         get => _people;
         set
         {
+            if (value < _people)
+            {
+                _freePeople -= value;
+            }
             _people = value;
             if (OnPeopleChange != null)
+            {
                 OnPeopleChange(_people);
+                ActivateWaitingBuildings();
+            }
         }
     }
 
@@ -101,7 +110,8 @@ public class GameManager :MonoBehaviour
         mainCamera = Camera.main;
         _gridComponent = grid.GetComponent<Grid>();
         InitField();
-        _waitList = new Queue<Building>();
+        _waitList = new List<Building>();
+        _buildings = new List<Building>();
     }
 
     // Update is called once per frame
@@ -138,6 +148,12 @@ public class GameManager :MonoBehaviour
                 {
                     PlaceBuilding(x, y);
                 }
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    Destroy(buildingToPlace.gameObject);
+                    buildingToPlace = null;
+                }
             }
         }
     }
@@ -168,9 +184,9 @@ public class GameManager :MonoBehaviour
             }
             else
             {
-                _waitList.Enqueue(buildingToPlace);
+                _waitList.Add(buildingToPlace);
             }
-            
+            _buildings.Add(buildingToPlace);
             buildingToPlace = null;
         }
     }
@@ -258,6 +274,7 @@ public class GameManager :MonoBehaviour
         {
             SceneManager.LoadScene("GameOver");
         }
+        DeactivateBuildings();
     }
 
     private IEnumerator MoveCamera(Vector3 newPos)
@@ -268,7 +285,38 @@ public class GameManager :MonoBehaviour
         }
 
     }
+    
+    void ActivateWaitingBuildings()
+    {
+        int i = 0;
+        while (_waitList.Count != 0 || i < _waitList.Count || _freePeople < 0)
+        {
+            if (_waitList[i].CostsPeople - _freePeople > 0)
+            {
+                _freePeople += _waitList[i].CostsPeople;
+                _waitList[i].IsActive = true;
+                _waitList.Remove(_waitList[i]);
+            }
 
+            i++;
+        }
+    }
+
+    void DeactivateBuildings()
+    {
+        if(_buildings.Count == 0)
+            return;
+        foreach (var building in _buildings)
+        {
+            if (building.IsActive && building.Type != Type.House && _freePeople < 0)
+            {
+                building.IsActive = false;
+                _freePeople += building.CostsPeople;
+            }
+                
+        }
+    }
+    
     private void FixedUpdate()
     {
        

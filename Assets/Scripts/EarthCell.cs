@@ -46,10 +46,18 @@ public class EarthCell : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if(HaveEmptyNeighbour(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
-            Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
-            GameManager.CellSize) && !GameManager.Instance.BuildingToPlace && GameManager.Instance.Energy - 10 >= 0)
-            IsSelected = true;
+        try
+        {
+            if(HaveEmptyNeighbour(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
+                Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
+                GameManager.CellSize) && !GameManager.Instance.BuildingToPlace && GameManager.Instance.Energy - 10 >= 0)
+                IsSelected = true;
+        }
+        catch (IndexOutOfRangeException e)
+        {
+
+        }
+        
     }
 
     void OnMouseEnter()

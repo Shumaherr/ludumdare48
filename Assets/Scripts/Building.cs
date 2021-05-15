@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public enum Type
 {
@@ -14,6 +16,7 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private Type type;
     [SerializeField] private int costsStone;
+    [SerializeField] private List<Light2D> activeLights;
 
     public int CostsStone => costsStone;
 
@@ -23,7 +26,7 @@ public class Building : MonoBehaviour
 
     private bool _isActive;
     private IEnumerator _coroutine;
-
+    private bool _coroutineFlag;
     public bool IsActive
     {
         get => _isActive;
@@ -32,14 +35,27 @@ public class Building : MonoBehaviour
             _isActive = value;
             if (value)
             {
+                foreach (var light in activeLights)
+                {
+                    light.enabled = true;
+                }
                 _coroutine = GiveResource();
                 StartCoroutine(_coroutine);
             }
             else
             {
+                foreach (var light in activeLights)
+                {
+                    light.enabled = false;
+                }
                 if (type == Type.House)
                     GameManager.Instance.People -= 10;
-                StopCoroutine(_coroutine);
+                if (_coroutineFlag)
+                {
+                    StopCoroutine(_coroutine);
+                    _coroutineFlag = false;
+                }
+                   
             }
         }
     }
@@ -59,6 +75,7 @@ public class Building : MonoBehaviour
 
     IEnumerator GiveResource()
     {
+        _coroutineFlag = true;
         while (_isActive)
         {
             switch (Type)
