@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -17,6 +18,11 @@ public class Building : MonoBehaviour
     [SerializeField] private Type type;
     [SerializeField] private int costsStone;
     [SerializeField] private List<Light2D> activeLights;
+    [SerializeField] private string tooltipText;
+    
+    private string _tooltip;
+
+    public string Tooltip => _tooltip;
 
     public int CostsStone => costsStone;
 
@@ -27,6 +33,7 @@ public class Building : MonoBehaviour
     private bool _isActive;
     private IEnumerator _coroutine;
     private bool _coroutineFlag;
+
     public bool IsActive
     {
         get => _isActive;
@@ -66,6 +73,7 @@ public class Building : MonoBehaviour
     void Start()
     {
         _isActive = false;
+        _tooltip = $"{type}/n Costs stone: {costsStone}/n Service staff: {costsPeople}/n {tooltipText}";
     }
 
     // Update is called once per frame
