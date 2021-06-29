@@ -26,7 +26,9 @@ public class GameManager :MonoBehaviour
     [SerializeField] public int startEnergy;
     [SerializeField] public int startStone;
     [SerializeField] public int startPeople = 0;
-    
+    [SerializeField] public float groundMovingPeriod = 0;
+
+    private UIManager _uiManager;
     private int _energy;
     private int _people;
     private int _stone;
@@ -34,11 +36,14 @@ public class GameManager :MonoBehaviour
 
     private List<Building> _buildings;
     private List<Building> _waitList; //Building that cant be activated because of there are no enough people
+
+    public List<Building> WaitList => _waitList;
+
     private bool _firstTurn;
 
     public bool FirstTurn => _firstTurn;
 
-    public Camera mainCamera;
+    private Camera _mainCamera;
 
     private Grid _gridComponent;
     private bool _moveCamera;
@@ -53,6 +58,10 @@ public class GameManager :MonoBehaviour
             if (value < _people)
             {
                 _freePeople -= value;
+            }
+            else
+            {
+                _freePeople += value;
             }
             _people = value;
             if (OnPeopleChange != null)
@@ -107,11 +116,13 @@ public class GameManager :MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
         _gridComponent = grid.GetComponent<Grid>();
         InitField();
         _waitList = new List<Building>();
         _buildings = new List<Building>();
+        _uiManager = GetComponent<UIManager>();
+        _freePeople = _people;
     }
 
     // Update is called once per frame
@@ -125,7 +136,7 @@ public class GameManager :MonoBehaviour
         if (buildingToPlace != null)
         {
             var groundPlane = new Plane(Vector3.forward, Vector3.zero);
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (groundPlane.Raycast(ray, out float position))
             {
@@ -171,20 +182,17 @@ public class GameManager :MonoBehaviour
             if (buildingToPlace.Type == Type.House)
             {
                 People += 10;
-                _freePeople += 10;
+            }
+
+            if (_freePeople - buildingToPlace.CostsPeople < 0 && buildingToPlace.CostsPeople > 0)
+            {
+                buildingToPlace.IsActive = false;
+                _waitList.Add(buildingToPlace);
             }
             else
             {
                 _freePeople -= buildingToPlace.CostsPeople;
-            }
-
-            if (_freePeople >= 0)
-            {
                 buildingToPlace.IsActive = true;
-            }
-            else
-            {
-                _waitList.Add(buildingToPlace);
             }
             _buildings.Add(buildingToPlace);
             buildingToPlace = null;
@@ -252,7 +260,9 @@ public class GameManager :MonoBehaviour
         if (_firstTurn)
         {
             _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
-            InvokeRepeating("MoveGround", 10.0f, 10.0f);
+            InvokeRepeating("MoveGround", groundMovingPeriod, groundMovingPeriod);
+            _uiManager.Timer.TimerPeriod = groundMovingPeriod;
+            _uiManager.Timer.IsActive = true;
         }
         _gridComponent.RemoveObjectFromEnv(x, y + (int)_groundLevel.position.y / CellSize);
         Energy -= 10;
@@ -266,7 +276,7 @@ public class GameManager :MonoBehaviour
     void MoveGround() {
         _gridComponent.RemoveFirstLine();
         _groundLevel.position = new Vector2(_groundLevel.position.x, _groundLevel.position.y - CellSize); //TODO Animate
-        Vector3 newPos = mainCamera.transform.position;
+        Vector3 newPos = _mainCamera.transform.position;
         newPos.y -= CellSize;
         StartCoroutine("MoveCamera", newPos);
         
@@ -279,8 +289,8 @@ public class GameManager :MonoBehaviour
 
     private IEnumerator MoveCamera(Vector3 newPos)
     {
-        while(mainCamera.transform.position.y > newPos.y) {
-            mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, newPos, 0.5f);
+        while(_mainCamera.transform.position.y > newPos.y) {
+            _mainCamera.transform.position = Vector3.MoveTowards(_mainCamera.transform.position, newPos, 0.5f);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -289,15 +299,14 @@ public class GameManager :MonoBehaviour
     void ActivateWaitingBuildings()
     {
         int i = 0;
-        while (_waitList.Count != 0 || i < _waitList.Count || _freePeople < 0)
+        while (_waitList.Count != 0 && i < _waitList.Count && _freePeople >= 0)
         {
-            if (_waitList[i].CostsPeople - _freePeople > 0)
+            if (_freePeople - _waitList[i].CostsPeople >= 0)
             {
-                _freePeople += _waitList[i].CostsPeople;
+                _freePeople -= _waitList[i].CostsPeople;
                 _waitList[i].IsActive = true;
                 _waitList.Remove(_waitList[i]);
             }
-
             i++;
         }
     }
@@ -308,17 +317,18 @@ public class GameManager :MonoBehaviour
             return;
         foreach (var building in _buildings)
         {
-            if (building.IsActive && building.Type != Type.House && _freePeople < 0)
+            if (building.IsActive && _freePeople < 0) //TODO Переписать на while
             {
                 building.IsActive = false;
                 _freePeople += building.CostsPeople;
+                _waitList.Add(building);
             }
                 
         }
     }
-    
-    private void FixedUpdate()
+
+    public void RemoveBuilding(Building building)
     {
-       
+        _buildings.Remove(building);
     }
 }

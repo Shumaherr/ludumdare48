@@ -99,6 +99,14 @@ public class Grid : MonoBehaviour
             {
                 _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
                 _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<Building>().IsActive = false;
+                GameManager.Instance.RemoveBuilding(_gridBuildings[i, 0].CurrentTransform.gameObject
+                    .GetComponent<Building>());
+                if (GameManager.Instance.WaitList.Contains(_gridBuildings[i, 0].CurrentTransform
+                    .GetComponent<Building>()))
+                {
+                    GameManager.Instance.WaitList.Remove(_gridBuildings[i, 0].CurrentTransform
+                        .GetComponent<Building>());
+                }
             }
 
             if (_gridEnv[i, 0].CurrentTransform != null)
