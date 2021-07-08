@@ -34,6 +34,12 @@ public class GameManager :MonoBehaviour
     private int _stone;
     private int _freePeople;
 
+    public int FreePeople
+    {
+        get => _freePeople;
+        set => _freePeople = value;
+    }
+
     private List<Building> _buildings;
     private List<Building> _waitList; //Building that cant be activated because of there are no enough people
 
@@ -55,19 +61,12 @@ public class GameManager :MonoBehaviour
         get => _people;
         set
         {
-            if (value < _people)
-            {
-                _freePeople -= value;
-            }
-            else
-            {
-                _freePeople += value;
-            }
+            if(value > _people)
+                ActivateWaitingBuildings(value - _people);
             _people = value;
             if (OnPeopleChange != null)
             {
                 OnPeopleChange(_people);
-                ActivateWaitingBuildings();
             }
         }
     }
@@ -122,7 +121,6 @@ public class GameManager :MonoBehaviour
         _waitList = new List<Building>();
         _buildings = new List<Building>();
         _uiManager = GetComponent<UIManager>();
-        _freePeople = _people;
     }
 
     // Update is called once per frame
@@ -182,6 +180,7 @@ public class GameManager :MonoBehaviour
             if (buildingToPlace.Type == Type.House)
             {
                 People += 10;
+                FreePeople += 10;
             }
 
             if (_freePeople - buildingToPlace.CostsPeople < 0 && buildingToPlace.CostsPeople > 0)
@@ -192,6 +191,7 @@ public class GameManager :MonoBehaviour
             else
             {
                 _freePeople -= buildingToPlace.CostsPeople;
+                Debug.Log(_freePeople);
                 buildingToPlace.IsActive = true;
             }
             _buildings.Add(buildingToPlace);
@@ -296,14 +296,16 @@ public class GameManager :MonoBehaviour
 
     }
     
-    void ActivateWaitingBuildings()
+    void ActivateWaitingBuildings(int peopleCount)
     {
         int i = 0;
-        while (_waitList.Count != 0 && i < _waitList.Count && _freePeople >= 0)
+        while (_waitList.Count != 0 && i < _waitList.Count && peopleCount > 0)
         {
-            if (_freePeople - _waitList[i].CostsPeople >= 0)
+            if (peopleCount - _waitList[i].CostsPeople >= 0)
             {
+                peopleCount -= _waitList[i].CostsPeople;
                 _freePeople -= _waitList[i].CostsPeople;
+                Debug.Log(_freePeople);
                 _waitList[i].IsActive = true;
                 _waitList.Remove(_waitList[i]);
             }
@@ -315,20 +317,32 @@ public class GameManager :MonoBehaviour
     {
         if(_buildings.Count == 0)
             return;
-        foreach (var building in _buildings)
+        int i = 0;
+        while (_freePeople < 0 && i < _buildings.Count)
         {
-            if (building.IsActive && _freePeople < 0) //TODO Переписать на while
+            if (_buildings[i].IsActive && _buildings[i].CostsPeople > 0)
             {
-                building.IsActive = false;
-                _freePeople += building.CostsPeople;
-                _waitList.Add(building);
+                _buildings[i].IsActive = false;
+                _freePeople += _buildings[i].CostsPeople;
+                Debug.Log(_freePeople);
+                _waitList.Add(_buildings[i]);
             }
-                
+
+            i++;
         }
     }
 
     public void RemoveBuilding(Building building)
     {
+        if (building.Type == Type.House)
+        {
+            People -= 10;
+            FreePeople -= 10;
+        }
+        else
+        {
+            FreePeople += building.CostsPeople;
+        }
         _buildings.Remove(building);
     }
 }

@@ -55,8 +55,6 @@ public class Building : MonoBehaviour
                 {
                     light.enabled = false;
                 }
-                if (type == Type.House)
-                    GameManager.Instance.People -= 10;
                 if (_coroutineFlag)
                 {
                     StopCoroutine(_coroutine);

@@ -1971,8 +1971,8 @@ MonoBehaviour:
   shovelCursorTexture: {fileID: 2800000, guid: 3f039f5e04779cb4fb638c77fa2d207c, type: 3}
   startEnergy: 99999
   startStone: 150
-  startPeople: 10
-  groundMovingPeriod: 10
+  startPeople: 0
+  groundMovingPeriod: 30
 --- !u!4 &1885267837
 Transform:
   m_ObjectHideFlags: 0
