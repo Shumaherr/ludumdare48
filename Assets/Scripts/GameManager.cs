@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Plane = UnityEngine.Plane;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
@@ -27,6 +28,7 @@ public class GameManager :MonoBehaviour
     [SerializeField] public int startStone;
     [SerializeField] public int startPeople = 0;
     [SerializeField] public float groundMovingPeriod = 0;
+    [SerializeField] private Transform _tooltipInstance;
 
     private UIManager _uiManager;
     private int _energy;
@@ -344,5 +346,15 @@ public class GameManager :MonoBehaviour
             FreePeople += building.CostsPeople;
         }
         _buildings.Remove(building);
+    }
+
+    public void ShowTooltip(string tooltipText)
+    {
+        _tooltipInstance.GetComponent<Tooltip>().ShowTooltip(tooltipText);
+    }
+
+    public void HideTooltip(string gameObjectName)
+    {
+        _tooltipInstance.GetComponent<Tooltip>().HideTooltip();
     }
 }

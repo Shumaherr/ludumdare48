@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Experimental.Rendering.Universal;
 
@@ -33,6 +35,7 @@ public class Building : MonoBehaviour
     private bool _isActive;
     private IEnumerator _coroutine;
     private bool _coroutineFlag;
+    private GameObject tooltipGO;
 
     public bool IsActive
     {
@@ -71,7 +74,7 @@ public class Building : MonoBehaviour
     void Start()
     {
         _isActive = false;
-        _tooltip = $"{type}/n Costs stone: {costsStone}/n Service staff: {costsPeople}/n {tooltipText}";
+        _tooltip = $"{type}\nCosts stone: {costsStone}\nService staff: {costsPeople}\n{tooltipText}";
     }
 
     // Update is called once per frame
@@ -108,4 +111,5 @@ public class Building : MonoBehaviour
     {
         StopCoroutine("GiveResource");
     }
+    
 }

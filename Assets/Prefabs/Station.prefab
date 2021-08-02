@@ -320,7 +320,8 @@ MonoBehaviour:
   activeLights:
   - {fileID: 1817518088201552691}
   - {fileID: 8741748140589078054}
-  costsPeople: 0
+  tooltipText: 
+  costsPeople: 10
 --- !u!61 &3215757378938481281
 BoxCollider2D:
   m_ObjectHideFlags: 0
