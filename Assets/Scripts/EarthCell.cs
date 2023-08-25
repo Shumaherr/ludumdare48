@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Playables;
-using Random = UnityEngine.Random;
 
-public class EarthCell : MonoBehaviour
-{
+public class EarthCell : MonoBehaviour {
     private Material _material;
-    private bool _isSelected;
     private Transform _grid;
+
     private static readonly int Selected = Shader.PropertyToID("_IsSelected");
+
+    private bool _isSelected;
 
     public bool IsSelected
     {
@@ -24,106 +19,69 @@ public class EarthCell : MonoBehaviour
         }
     }
 
-    private void SetTransparent(bool value)
-    {
-        if (value)
-            _material.SetInt(Selected, 1);
-        else
-        {
-            _material.SetInt(Selected, 0);
-        }
-    }
-
-    private void Start()
-    {
+    private void Start() {
         _material = GetComponent<SpriteRenderer>().material;
-        _grid = GetComponentInParent<Transform>();
+        _grid = transform.parent;
     }
 
-    private void Update()
-    {
+    private void SetTransparent(bool value) {
+        _material.SetInt(Selected, value ? 1 : 0);
     }
 
-    private void OnMouseOver()
-    {
-        try
-        {
-            if(HaveEmptyNeighbour(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
-                Mathf.RoundToInt(GameManager.Instance._groundLevel.position.y + Math.Abs(transform.position.y)) /
-                GameManager.CellSize) && !GameManager.Instance.BuildingToPlace && GameManager.Instance.Energy - 10 >= 0)
-                IsSelected = true;
-        }
-        catch (IndexOutOfRangeException e)
-        {
-
-        }
-        
+    private void OnMouseOver() {
     }
 
-    void OnMouseEnter()
-    {
-        if(!GameManager.Instance.BuildingToPlace)
+    private void OnMouseEnter() {
+        if (!GameManager.Instance.BuildingToPlace) {
             Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
+        }
+
+        try {
+            if (GameManager.Instance.BuildingToPlace || GameManager.Instance.Energy < 10) return;
+            if (GameManager.Instance.FirstTurn && Utils.CellWorldPosToGridPos(transform.position).y == 0 ||
+                HaveEmptyNeighbour(Utils.CellWorldPosToGridPos(transform.position))) {
+                IsSelected = true;
+            }
+        }
+        catch (IndexOutOfRangeException e) {
+            // Handle the exception if needed
+        }
     }
 
-    private void OnMouseExit()
-    {
+    private void OnMouseExit() {
         IsSelected = false;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
-    private void OnMouseDown()
-    {
-        if(!_isSelected && !GameManager.Instance.FirstTurn)
+    private void OnMouseDown() {
+        if (!GameManager.Instance.FirstTurn && !_isSelected) {
             return;
-        GameManager.Instance.DigCell(Mathf.RoundToInt(transform.position.x / GameManager.CellSize),
-            (Mathf.RoundToInt(Math.Abs(transform.position.y)) /
-            GameManager.CellSize));
-        Utils.CreateWorldTextPopup("-10", transform.position, 1.0f);
+        }
+
+        var position = transform.position;
+        int x = Mathf.RoundToInt(position.x / GameManager.CellSize);
+        int y = Mathf.RoundToInt(position.y) / GameManager.CellSize;
+
+        GameManager.Instance.DigCell(Utils.CellWorldPosToGridPos(position));
+        Utils.CreateWorldTextPopup("-10", position, 1.0f);
         Destroy(gameObject);
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
 
-    private bool HaveEmptyNeighbour(int x, int y)
-    {
-        if (x == 0)
-        {
-            if (y == 0)
-            {
-                return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1);
-            }
-            
-            if (y == GameManager.Instance.gridSize.y - 1)
-            {
-                return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
-            }
-            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
-                   GameManager.Instance.IsCellEmpty(x, y - 1);
-        }
+    private bool HaveEmptyNeighbour(Vector2Int pos) {
+        GameManager gm = GameManager.Instance;
+        int gridSizeX = gm.gridSize.x;
+        int gridSizeY = gm.gridSize.y;
+        var x = pos.x;
+        var y = pos.y;
+        bool IsCellEmpty(int xPos, int yPos) => gm.IsCellEmpty(xPos, yPos);
 
-        if (y == 0)
-        {
-            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
-                   GameManager.Instance.IsCellEmpty(x - 1, y);
-        }
-        if (x == GameManager.Instance.gridSize.x - 1)
-        {
-            if (y == GameManager.Instance.gridSize.y - 1)
-            {
-                return GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
-            }
+        bool IsWithinGrid(int xPos, int yPos) =>
+            xPos >= 0 && xPos < gridSizeX && yPos >= 0 && yPos < gridSizeY;
 
-            return GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1) ||
-                   GameManager.Instance.IsCellEmpty(x, y - 1);
-        }
-
-        if (y == GameManager.Instance.gridSize.y - 1)
-        {
-            return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1) ||
-                   GameManager.Instance.IsCellEmpty(x - 1, y);
-        }
-
-        return GameManager.Instance.IsCellEmpty(x + 1, y) || GameManager.Instance.IsCellEmpty(x, y + 1) ||
-               GameManager.Instance.IsCellEmpty(x - 1, y) || GameManager.Instance.IsCellEmpty(x, y - 1);
+        return IsWithinGrid(x + 1, y) && IsCellEmpty(x + 1, y) ||
+               IsWithinGrid(x - 1, y) && IsCellEmpty(x - 1, y) ||
+               IsWithinGrid(x, y + 1) && IsCellEmpty(x, y + 1) ||
+               IsWithinGrid(x, y - 1) && IsCellEmpty(x, y - 1);
     }
 }

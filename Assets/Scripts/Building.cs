@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public enum Type
 {
@@ -19,7 +19,7 @@ public class Building : MonoBehaviour
 {
     [SerializeField] private Type type;
     [SerializeField] private int costsStone;
-    [SerializeField] private List<Light2D> activeLights;
+    [SerializeField] private List<UnityEngine.Rendering.Universal.Light2D> activeLights;
     [SerializeField] private string tooltipText;
     
     private string _tooltip;

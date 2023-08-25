@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-public class GameManager :MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
 
@@ -143,7 +143,7 @@ public class GameManager :MonoBehaviour
                 Vector3 worldPosition = ray.GetPoint(position);
                 int x = DoubleExtension.RoundToValue(worldPosition.x, CellSize);
                 int y = DoubleExtension.RoundToValue(worldPosition.y, CellSize);
-
+                Debug.Log($"x: {x} y: {y}");
                 if (x < _groundLevel.position.x)
                     x = DoubleExtension.RoundToValue(_groundLevel.position.x, CellSize);
                 if (y > _groundLevel.position.y)
@@ -257,11 +257,13 @@ public class GameManager :MonoBehaviour
     }
 
     //Remove object from the main matrix
-    public void DigCell(int x, int y)
+    public void DigCell(Vector2Int cellPos)
     {
+        var x = cellPos.x;
+        var y = cellPos.y;
         if (_firstTurn)
         {
-            _firstTurn = false; //First turn have bin did. Now player can dig only neighbour cells
+            _firstTurn = false; //First turn has bin did. Now player can dig only neighbour cells
             InvokeRepeating("MoveGround", groundMovingPeriod, groundMovingPeriod);
             _uiManager.Timer.TimerPeriod = groundMovingPeriod;
             _uiManager.Timer.IsActive = true;
@@ -356,5 +358,10 @@ public class GameManager :MonoBehaviour
     public void HideTooltip(string gameObjectName)
     {
         _tooltipInstance.GetComponent<Tooltip>().HideTooltip();
+    }
+    
+    public int GetGroundLevel()
+    {
+        return (int)_groundLevel.position.y;
     }
 }

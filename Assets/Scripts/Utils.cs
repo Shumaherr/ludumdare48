@@ -69,4 +69,11 @@ public static class Utils
         textMesh.GetComponent<MeshRenderer>().sortingOrder = sortingOrder;
         return textMesh;
     }
+
+    public static Vector2Int CellWorldPosToGridPos(Vector3 worldPos)
+    {
+        var x = Mathf.RoundToInt(worldPos.x / GameManager.CellSize);
+        var y = Mathf.RoundToInt(worldPos.y - GameManager.Instance.GetGroundLevel()) / GameManager.CellSize;
+        return new Vector2Int(x, -y);
+    }
 }

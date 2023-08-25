@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,26 +16,10 @@ public class Grid : MonoBehaviour
     private GridCell[,] _gridBuildings;
     private Renderer _mainRenderer;
 
-
-    private void Awake()
-    {
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-
     public void PlaceFlyingBuilding(int placeX, int placeY, Transform building)
     {
         _gridBuildings[placeX, placeY].CurrentTransform = building;
+        Debug.Log($"Placed {building.name} at {placeX} {placeY}");
     }
 
     public bool IsPlaceTaken(int placeX, int placeY)
@@ -73,6 +58,7 @@ public class Grid : MonoBehaviour
 
     public void RemoveObjectFromEnv(int x, int y)
     {
+        Debug.Log($"Trying to remove {x} {y}");
         Vector2 newPos = transform.position;
         newPos.x += x * GameManager.CellSize;
         newPos.y -= y * GameManager.CellSize - GameManager.Instance._groundLevel.position.y;
@@ -144,5 +130,18 @@ public class Grid : MonoBehaviour
     {
         return _gridEnv[x, y].CurrentTransform.CompareTag("Stones");
     }
+    
+    /*private void OnDrawGizmos()
+    {
+        for (int i = 0; i < GameManager.Instance.gridSize.x; i++) {
+            for (int j = 0; j < GameManager.Instance.gridSize.y; j++) {
+                GUIStyle style = new GUIStyle();
+                style.normal.textColor = Color.white;
+                style.fontSize = 10;
+                Vector3 textPosition = _gridEnv[i,j].CurrentTransform.position + new Vector3(0, 0.5f, 0);
+                Handles.Label(textPosition, $"{i}, {j}", style);
+            }
+        }
+    }*/
 
 }
