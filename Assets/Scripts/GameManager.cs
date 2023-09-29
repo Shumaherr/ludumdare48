@@ -278,8 +278,10 @@ public class GameManager : MonoBehaviour
     }
 
     void MoveGround() {
+        var position = _groundLevel.position;
+        position = new Vector2(position.x, position.y - CellSize); //TODO Animate
+        _groundLevel.position = position;
         _gridComponent.RemoveFirstLine();
-        _groundLevel.position = new Vector2(_groundLevel.position.x, _groundLevel.position.y - CellSize); //TODO Animate
         Vector3 newPos = _mainCamera.transform.position;
         newPos.y -= CellSize;
         StartCoroutine("MoveCamera", newPos);
