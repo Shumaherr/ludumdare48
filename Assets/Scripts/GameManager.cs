@@ -55,7 +55,9 @@ public class GameManager : MonoBehaviour
 
     private Grid _gridComponent;
     private bool _moveCamera;
-    
+
+    public Pick PlayerPick { get; private set; }
+
     public Building BuildingToPlace => buildingToPlace;
     
     public int People
@@ -123,6 +125,7 @@ public class GameManager : MonoBehaviour
         _waitList = new List<Building>();
         _buildings = new List<Building>();
         _uiManager = GetComponent<UIManager>();
+        PlayerPick = new Pick(1, 1, 100, 10);
     }
 
     // Update is called once per frame

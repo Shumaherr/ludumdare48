@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EarthCell : MonoBehaviour {
+    [SerializeField] List<Sprite> sprites;
     private Material _material;
     private Transform _grid;
+    private int maxDig;
+    private int currentDig;
 
     private static readonly int Selected = Shader.PropertyToID("_IsSelected");
 
@@ -22,6 +26,7 @@ public class EarthCell : MonoBehaviour {
     private void Start() {
         _material = GetComponent<SpriteRenderer>().material;
         _grid = transform.parent;
+        maxDig = sprites.Count - 1;
     }
 
     private void SetTransparent(bool value) {
@@ -57,11 +62,14 @@ public class EarthCell : MonoBehaviour {
         if (!GameManager.Instance.FirstTurn && !_isSelected) {
             return;
         }
+        
+        if(currentDig < maxDig) {
+            currentDig += GameManager.Instance.PlayerPick.DigPower;
+            GetComponent<SpriteRenderer>().sprite = sprites[currentDig];
+            return;
+        }
 
         var position = transform.position;
-        int x = Mathf.RoundToInt(position.x / GameManager.CellSize);
-        int y = Mathf.RoundToInt(position.y) / GameManager.CellSize;
-
         GameManager.Instance.DigCell(Utils.CellWorldPosToGridPos(position));
         Utils.CreateWorldTextPopup("-10", position, 1.0f);
         Destroy(gameObject);
