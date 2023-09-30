@@ -26,14 +26,11 @@ public class EarthCell : MonoBehaviour {
     private void Start() {
         _material = GetComponent<SpriteRenderer>().material;
         _grid = transform.parent;
-        maxDig = sprites.Count - 1;
+        maxDig = sprites.Count;
     }
 
     private void SetTransparent(bool value) {
         _material.SetInt(Selected, value ? 1 : 0);
-    }
-
-    private void OnMouseOver() {
     }
 
     private void OnMouseEnter() {
@@ -62,10 +59,9 @@ public class EarthCell : MonoBehaviour {
         if (!GameManager.Instance.FirstTurn && !_isSelected) {
             return;
         }
-        
+        currentDig += GameManager.Instance.PlayerPick.DigPower;
         if(currentDig < maxDig) {
-            currentDig += GameManager.Instance.PlayerPick.DigPower;
-            GetComponent<SpriteRenderer>().sprite = sprites[currentDig];
+            GetComponent<SpriteRenderer>().sprite = sprites[currentDig - 1];
             return;
         }
 

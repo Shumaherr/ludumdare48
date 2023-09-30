@@ -31,12 +31,15 @@ public class Pick {
         set => price = value;
     }
     
-    public void Upgrade() {
+    public bool UpgradeIfPossible() {
         if (level < maxLevel) {
             level++;
             digPower++;
             price *= 2;
+            return true;
         }
+
+        return false;
     }
 
     public void Reset() {

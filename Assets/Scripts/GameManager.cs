@@ -369,4 +369,8 @@ public class GameManager : MonoBehaviour
     {
         return (int)_groundLevel.position.y;
     }
+
+    public void UpdatePick() {
+        PlayerPick.UpgradeIfPossible();
+    }
 }
