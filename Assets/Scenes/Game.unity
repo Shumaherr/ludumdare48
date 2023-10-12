@@ -1203,8 +1203,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f263ab1397d3a8b41b0701bc69bfb586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingsPrefabs: []
   earthPrefab: {fileID: 9222710129167665321, guid: 6c9b77400dba8014a90f6c48e416efe4, type: 3}
+  earthPrefabs:
+  - {fileID: 9222710129167665321, guid: 6c9b77400dba8014a90f6c48e416efe4, type: 3}
   waterPrefab: {fileID: 6392787266206410244, guid: 513920683bb77ef489b0213fc3e5ea35, type: 3}
   backgroundPrefab: {fileID: 3413345461527024354, guid: 0c9085ce742aacc4a9610e5a4f0e9565, type: 3}
   stonePrefab: {fileID: 462277882330156875, guid: b5355c22bab15dd4e859951c2d7d55c7, type: 3}
