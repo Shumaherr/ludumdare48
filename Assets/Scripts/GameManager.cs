@@ -271,7 +271,7 @@ public class GameManager : MonoBehaviour
             _uiManager.Timer.TimerPeriod = groundMovingPeriod;
             _uiManager.Timer.IsActive = true;
         }
-        _gridComponent.RemoveObjectFromEnv(x, y + (int)_groundLevel.position.y / CellSize);
+        _gridComponent.RemoveObjectFromEnv(x, y);
         Energy -= 10;
     }
 
