@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Plane = UnityEngine.Plane;
-using Quaternion = UnityEngine.Quaternion;
-using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -35,6 +31,7 @@ public class GameManager : MonoBehaviour
     private int _people;
     private int _stone;
     private int _freePeople;
+    private bool _isCameraMoving;
 
     public int FreePeople
     {
@@ -285,10 +282,6 @@ public class GameManager : MonoBehaviour
         position = new Vector2(position.x, position.y - CellSize); //TODO Animate
         _groundLevel.position = position;
         _gridComponent.RemoveFirstLine();
-        Vector3 newPos = _mainCamera.transform.position;
-        newPos.y -= CellSize;
-        StartCoroutine("MoveCamera", newPos);
-        
         if (_gridComponent.NoTurn())
         {
             SceneManager.LoadScene("GameOver");
@@ -296,13 +289,28 @@ public class GameManager : MonoBehaviour
         DeactivateBuildings();
     }
 
-    private IEnumerator MoveCamera(Vector3 newPos)
+    private void MoveCamera() {
+        if (_isCameraMoving) {
+            return;
+        }
+        _isCameraMoving = true;
+        Vector3 newPos = _mainCamera.transform.position;
+        newPos.y -= CellSize;
+        StartCoroutine("MoveCameraTo", newPos);
+    }
+    
+    public void Scout() {
+        Energy -= 10;
+        MoveCamera();
+    }
+
+    private IEnumerator MoveCameraTo(Vector3 newPos)
     {
         while(_mainCamera.transform.position.y > newPos.y) {
             _mainCamera.transform.position = Vector3.MoveTowards(_mainCamera.transform.position, newPos, 0.5f);
             yield return new WaitForSeconds(0.1f);
         }
-
+        _isCameraMoving = false;
     }
     
     void ActivateWaitingBuildings(int peopleCount)
