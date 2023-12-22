@@ -31,10 +31,6 @@ public class EarthCell : MonoBehaviour {
     }
 
     private void OnMouseEnter() {
-        if (!GameManager.Instance.BuildingToPlace) {
-            Cursor.SetCursor(GameManager.Instance.shovelCursorTexture, Vector2.zero, CursorMode.Auto);
-        }
-
         try {
             if (GameManager.Instance.BuildingToPlace || GameManager.Instance.Energy < 10) return;
             if (GameManager.Instance.FirstTurn && Utils.CellWorldPosToGridPos(transform.position).y == 0 ||

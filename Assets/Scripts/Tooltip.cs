@@ -8,17 +8,16 @@ using UnityEngine.UI;
 
 public class Tooltip : MonoBehaviour
 {
-   private RectTransform bgRectTransform;
-   private TextMeshProUGUI _textMeshPro;
+   //private RectTransform bgRectTransform;
+   [SerializeField] private TextMeshProUGUI _textMeshPro;
    private RectTransform _rectTransform;
-   [SerializeField] private RectTransform canvasRectTransform;
+   private RectTransform canvasRectTransform;
    Camera cam;
    Vector3 min, max;
 
    private void Awake()
    {
-      bgRectTransform = transform.Find("background").GetComponent<RectTransform>();
-      _textMeshPro = transform.Find("text").GetComponent<TextMeshProUGUI>();
+      canvasRectTransform = transform.GetComponentInParent<RectTransform>();
       _rectTransform = transform.GetComponent<RectTransform>();
       gameObject.SetActive(false);
       cam = Camera.main;
@@ -33,7 +32,7 @@ public class Tooltip : MonoBehaviour
 
       Vector2 textSize = _textMeshPro.GetRenderedValues(false);
       Vector2 textPadding = new Vector2(8,0);
-      bgRectTransform.sizeDelta = textSize + textPadding;
+      //bgRectTransform.sizeDelta = textSize + textPadding;
    }
 
    public void ShowTooltip(string tooltipText)
@@ -56,14 +55,14 @@ public class Tooltip : MonoBehaviour
       max = new Vector3(cam.pixelWidth, cam.pixelHeight, 0);
       //clamp it to the screen size so it doesn't go outside
 
-      if (newPos.x + bgRectTransform.rect.width > canvasRectTransform.rect.width)
+      /*if (newPos.x + bgRectTransform.rect.width > canvasRectTransform.rect.width)
       {
          newPos.x = canvasRectTransform.rect.width - bgRectTransform.rect.width;
       }
       if (newPos.y + bgRectTransform.rect.height > canvasRectTransform.rect.height)
       {
          newPos.y = canvasRectTransform.rect.height - bgRectTransform.rect.height;
-      }
+      }*/
       _rectTransform.position = newPos;
    }
 }

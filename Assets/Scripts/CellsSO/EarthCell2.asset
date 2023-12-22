@@ -10,21 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 085d413476584ca492502150da485f57, type: 3}
-  m_Name: EarthCell
+  m_Name: EarthCell2
   m_EditorClassIdentifier: 
   Sprites:
-  - {fileID: 21300000, guid: 52733e1c595f2984b8a404a1f6967862, type: 3}
-  - {fileID: 21300000, guid: 8f6009f72f78122499a593c46d197bf7, type: 3}
-  - {fileID: 21300000, guid: 5531df669262f58479c4584da764eb02, type: 3}
+  - {fileID: 21300000, guid: 70dea68404aefd24980df31fa92c9b69, type: 3}
+  - {fileID: 21300000, guid: b48ac48fcfe75ab4db0b59857e51c2e2, type: 3}
+  - {fileID: 21300000, guid: e9532b75a02ebbb498b4c77153ae8804, type: 3}
   LineToProbability:
     list:
-    - Key: 0
-      Value: 1
     - Key: 5
-      Value: 0.8
+      Value: 0.2
     - Key: 7
       Value: 0.5
     - Key: 10
-      Value: 0
+      Value: 1
     keyCollision: 0
-  giveStone: 0
+  giveStone: 20

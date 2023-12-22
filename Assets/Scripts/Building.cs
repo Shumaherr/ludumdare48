@@ -16,6 +16,14 @@ public class Building : MonoBehaviour
     [SerializeField] private List<UnityEngine.Rendering.Universal.Light2D> activeLights;
     [SerializeField] private string tooltipText;
     
+    private Vector2Int _cellPosition;
+
+    public Vector2Int CellPosition
+    {
+        get => _cellPosition;
+        set => _cellPosition = value;
+    }
+
     private string _tooltip;
 
     public string Tooltip => _tooltip;
@@ -104,6 +112,11 @@ public class Building : MonoBehaviour
     private void OnDestroy()
     {
         StopCoroutine("GiveResource");
+    }
+    
+    public void DestroyBuilding()
+    {
+        Destroy(gameObject);
     }
     
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Grid : MonoBehaviour
-{
+public class Grid : MonoBehaviour {
     [SerializeField] private Transform earthPrefab;
     [SerializeField] private List<Transform> earthPrefabs;
     [SerializeField] private Transform waterPrefab;
@@ -24,78 +24,68 @@ public class Grid : MonoBehaviour
         }
     }
 
-    public void PlaceFlyingBuilding(int placeX, int placeY, Transform building)
-    {
+    public void PlaceFlyingBuilding(int placeX, int placeY, Transform building) {
         _gridBuildings[placeX, placeY].CurrentTransform = building;
         Debug.Log($"Placed {building.name} at {placeX} {placeY}");
     }
 
-    public bool IsPlaceTaken(int placeX, int placeY)
-    {
+    public bool IsPlaceTaken(int placeX, int placeY) {
         return _gridBuildings[placeX, placeY].CurrentTransform != null;
     }
+    
+    public Building GetBuilding(int placeX, int placeY) {
+        return _gridBuildings[placeX, placeY].CurrentTransform.GetComponent<Building>();
+    }
 
-    public bool IsCellDigged(int placeX, int placeY)
-    {
+    public bool IsCellDigged(int placeX, int placeY) {
         return !_gridEnv[placeX, placeY].CurrentTransform.CompareTag("Ground");
     }
 
-    public void GenerateCells(Vector2Int gridSize)
-    {
+    public void GenerateCells(Vector2Int gridSize) {
         _gridEnv = new GridCell[gridSize.x, gridSize.y];
-        for (int i = gridSize.x - 1; i >= 0; i--)
-        {
-            for (int j = gridSize.y - 1; j >= 0; j--)
-            {
+        for (int i = 0; i < gridSize.x; i++) {
+            for (int j = 0; j < gridSize.y; j++) {
                 _gridEnv[i, j] = gameObject.AddComponent<GridCell>();
-                _gridEnv[i, j].CurrentTransform = Instantiate(SelectPrefab(GameManager.Instance.GetGroundLevel()),
+                _gridEnv[i, j].CurrentTransform = Instantiate(SelectPrefab(j),
                     new Vector3(transform.position.x + i * 5, transform.position.y - j * 5), Quaternion.identity);
                 _gridEnv[i, j].CurrentTransform.parent = this.transform;
             }
         }
 
         _gridBuildings = new GridCell[gridSize.x, gridSize.y];
-        for (int i = gridSize.x - 1; i >= 0; i--)
-        {
-            for (int j = gridSize.y - 1; j >= 0; j--)
-            {
+        for (int i = gridSize.x - 1; i >= 0; i--) {
+            for (int j = gridSize.y - 1; j >= 0; j--) {
                 _gridBuildings[i, j] = gameObject.AddComponent<GridCell>();
             }
         }
     }
 
-    private Transform SelectPrefab(int groundLine)
-    {
-        float totalProbability = 0.0f;
-    
-        // Сначала вычисляем общую вероятность для всех доступных префабов
-        foreach (var prefab in _cellDatas.Keys)
-        {
-            totalProbability += prefab.LineToProbability[groundLine];
+    private Transform SelectPrefab(int groundLine) {
+        // Step 1: Filter the _cellDatas dictionary
+        var filteredTransforms = _cellDatas
+            .Where(pair => pair.Key.LineToProbability.Any(entry => entry.Key <= groundLine)).ToList();
+
+        // Step 2: Create a list of tuples
+        var transformsWithProbabilities = filteredTransforms
+            .SelectMany(pair => pair.Key.LineToProbability.Where(entry => entry.Key <= groundLine)
+                .Select(entry => new { Transform = pair.Value, Probability = entry.Value })).ToList();
+
+        // Step 3: Select one Transform based on the probabilities
+        float totalProbability = transformsWithProbabilities.Sum(item => item.Probability);
+        float randomPoint = Random.value * totalProbability;
+
+        foreach (var item in transformsWithProbabilities) {
+            if (randomPoint < item.Probability)
+                return item.Transform;
+            else
+                randomPoint -= item.Probability;
         }
 
-        // Генерируем случайное значение в диапазоне от 0 до общей вероятности
-        float randomValue = Random.Range(0.0f, totalProbability);
-
-        float cumulativeProbability = 0.0f;
-
-        // Теперь перебираем префабы снова, чтобы определить, к какому префабу отнести случайное значение
-        foreach (var prefab in _cellDatas.Keys)
-        {
-            cumulativeProbability += prefab.LineToProbability[groundLine];
-        
-            if (randomValue <= cumulativeProbability)
-            {
-                return _cellDatas[prefab];
-            }
-        }
-
-        // Если что-то пошло не так, вернуть null
+        // If no Transform is selected (which should not happen), return null
         return null;
     }
 
-    public void RemoveObjectFromEnv(int x, int y)
-    {
+    public void RemoveObjectFromEnv(int x, int y) {
         Debug.Log($"Trying to remove {x} {y}");
         Vector2 newPos = transform.position;
         newPos.x += x * GameManager.CellSize;
@@ -103,31 +93,25 @@ public class Grid : MonoBehaviour
         if (Random.value > 0.85)
             _gridEnv[x, y].CurrentTransform = Instantiate(waterPrefab,
                 newPos, Quaternion.identity);
-        else if (Random.value > 0.85)
-        {
+        else if (Random.value > 0.85) {
             _gridEnv[x, y].CurrentTransform = Instantiate(stonePrefab,
                 newPos, Quaternion.identity);
         }
-        else
-        {
+        else {
             _gridEnv[x, y].CurrentTransform = Instantiate(backgroundPrefab,
                 newPos, Quaternion.identity);
         }
     }
 
-    public void RemoveFirstLine()
-    {
-        for (int i = 0; i < GameManager.Instance.gridSize.x; i++)
-        {
-            if (_gridBuildings[i, 0].CurrentTransform != null)
-            {
+    public void RemoveFirstLine() {
+        for (int i = 0; i < GameManager.Instance.gridSize.x; i++) {
+            if (_gridBuildings[i, 0].CurrentTransform != null) {
                 _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
                 _gridBuildings[i, 0].CurrentTransform.gameObject.GetComponent<Building>().IsActive = false;
                 GameManager.Instance.RemoveBuilding(_gridBuildings[i, 0].CurrentTransform.gameObject
                     .GetComponent<Building>());
                 if (GameManager.Instance.WaitList.Contains(_gridBuildings[i, 0].CurrentTransform
-                    .GetComponent<Building>()))
-                {
+                        .GetComponent<Building>())) {
                     GameManager.Instance.WaitList.Remove(_gridBuildings[i, 0].CurrentTransform
                         .GetComponent<Building>());
                 }
@@ -142,15 +126,11 @@ public class Grid : MonoBehaviour
         GameManager.Instance.gridSize.y -= 1;
     }
 
-    public bool NoTurn()
-    {
+    public bool NoTurn() {
         bool result = true;
-        for (int i = 0; i < GameManager.Instance.gridSize.x; i++)
-        {
-            for (int j = 0; j < GameManager.Instance.gridSize.y; j++)
-            {
-                if (!_gridEnv[i, j].CurrentTransform.CompareTag("Ground"))
-                {
+        for (int i = 0; i < GameManager.Instance.gridSize.x; i++) {
+            for (int j = 0; j < GameManager.Instance.gridSize.y; j++) {
+                if (!_gridEnv[i, j].CurrentTransform.CompareTag("Ground")) {
                     result = false;
                 }
             }
@@ -159,16 +139,14 @@ public class Grid : MonoBehaviour
         return result;
     }
 
-    public bool IsWater(int x, int y)
-    {
+    public bool IsWater(int x, int y) {
         return _gridEnv[x, y].CurrentTransform.CompareTag("Water");
     }
 
-    public bool IsStone(int x, int y)
-    {
+    public bool IsStone(int x, int y) {
         return _gridEnv[x, y].CurrentTransform.CompareTag("Stones");
     }
-    
+
     /*private void OnDrawGizmos()
     {
         for (int i = 0; i < GameManager.Instance.gridSize.x; i++) {
@@ -181,5 +159,4 @@ public class Grid : MonoBehaviour
             }
         }
     }*/
-
 }
