@@ -1,0 +1,58 @@
+name: Actions 😎
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build my project ✨
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true
+
+      # Cache
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      # Test
+     # - name: Run tests
+      #  uses: game-ci/unity-test-runner@v3
+      #  env:
+      #    UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+ #       with:
+   #       githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v3
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: Android
+          androidExportType: 'androidPackage'
+
+      # Save APK as artifact
+      - name: Save APK as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Digger
+          path: build
+
+      # Execute a custom script to send the APK to Discord
+      - name: Send APK to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" -d '{
+            "content": "New APK build is ready for download."
+          }' $DISCORD_WEBHOOK_URL
+          # Use a tool like curl or a Discord API library to upload the APK file
+          curl -X POST -H "Content-Type: multipart/form-data" -F "file=@./build/Android/Android.apk" $DISCORD_WEBHOOK_URL
