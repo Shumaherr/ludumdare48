@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour {
     }
 
     bool CanBuildingPlaced(int x, int y) {
-        if (_gridComponent.IsPlaceTaken(x, y) || !_gridComponent.IsCellDigged(x, y))
+        if (_gridComponent.IsPlaceTaken(x, y) || !_gridComponent.IsCellDigged(x, y) || CheckIfBuildingHasNoNeighbourCells(x, y))
             return false;
         switch (buildingToPlace.Type) {
             case Type.House:
