@@ -59,6 +59,15 @@ public class Grid : MonoBehaviour {
             }
         }
     }
+    
+    public void GenerateNextRow() {
+        for (int i = 0; i < GameManager.Instance.gridSize.x; i++) {
+            _gridEnv[i, GameManager.Instance.gridSize.y] = gameObject.AddComponent<GridCell>();
+            _gridEnv[i, GameManager.Instance.gridSize.y].CurrentTransform = Instantiate(SelectPrefab(GameManager.Instance.gridSize.y),
+                new Vector3(transform.position.x + i * 5, transform.position.y - GameManager.Instance.gridSize.y * 5), Quaternion.identity);
+            _gridEnv[i, GameManager.Instance.gridSize.y].CurrentTransform.parent = this.transform;
+        }
+    }
 
     private Transform SelectPrefab(int groundLine) {
         // Step 1: Filter the _cellDatas dictionary

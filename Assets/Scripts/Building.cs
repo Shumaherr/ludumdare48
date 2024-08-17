@@ -111,6 +111,7 @@ public class Building : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameManager.Instance.RemoveBuilding(this);
         StopCoroutine("GiveResource");
     }
     

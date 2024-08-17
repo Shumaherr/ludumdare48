@@ -10,10 +10,7 @@ using Vector3 = UnityEngine.Vector3;
 public class GameManager : MonoBehaviour {
     private static GameManager _instance;
 
-    public static GameManager Instance
-    {
-        get { return _instance; }
-    }
+    public static GameManager Instance => _instance;
 
     public const int CellSize = 5;
     [SerializeField] private GameObject grid;

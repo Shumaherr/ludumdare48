@@ -49,7 +49,7 @@ public class EarthCell : MonoBehaviour {
     }
 
     private void OnMouseDown() {
-        if (!GameManager.Instance.FirstTurn && !_isSelected) {
+        if (!IsSelected) {
             return;
         }
         currentDig += GameManager.Instance.PlayerPick.DigPower;
